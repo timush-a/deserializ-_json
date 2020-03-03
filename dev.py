@@ -48,6 +48,7 @@ for i in range(len(users)):
         "Competed tasks\n"                                 # company adress
                                                              )
 
+
 if users[i]['id'] == tasks[i]['userId']:
         for a in range(tasks[i]['id']):
             print(a)
