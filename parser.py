@@ -42,7 +42,7 @@ while True:
         tasks_data_responce = requests.get("https://json.medrating.org/todos")
     except requests.exceptions.ConnectionError:
         print("Error, the script did not complete the task")
-        print("Check yor internet connection")
+        print("Check your internet connection")
         raise SystemExit
 
     # receiving data and deserialization
