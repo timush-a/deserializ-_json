@@ -7,8 +7,8 @@ import time
 
 # API availability check
 try:
-    requests.get("https://json.medrating.org/users")
-    requests.get("https://json.medrating.org/todos")
+    requests.get("https://jsonplaceholder.typicode.com/users")
+    requests.get("https://jsonplaceholder.typicode.com/todos")
 except requests.exceptions.ConnectionError:
     print("Error, the script did not complete the task")
     print("Check your internet connection")
@@ -33,7 +33,7 @@ create_folder("tasks")
 # last modified time of file
 def last_change(file_name):
     change_time = os.path.getmtime(file_name)
-    last_change_time = time.strftime('%Y-%m-%d-%H-%M', time.localtime(change_time))
+    last_change_time = time.strftime('%Y-%m-%d-%H-%m-%s', time.localtime(change_time))
     return last_change_time
 
 
@@ -53,8 +53,8 @@ def shorten_task_name(task_name):
 
 
 # receiving data and deserialization
-users_data_response = requests.get("https://json.medrating.org/users")
-tasks_data_responce = requests.get("https://json.medrating.org/todos")
+users_data_response = requests.get("https://jsonplaceholder.typicode.com/users")
+tasks_data_responce = requests.get("https://jsonplaceholder.typicode.com/todos")
 
 users = json.loads(users_data_response.text)
 tasks = json.loads(tasks_data_responce.text)
@@ -95,7 +95,9 @@ for user in users:
         file = open('{}'.format(user_file_name), 'w', encoding='utf-8')
         file.write("".join(user_info))
         file.close()
+        print('Report created')
     except IOError:
         print("IOError")
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), user_file_name)
         os.remove(path)
+    
