@@ -33,7 +33,7 @@ create_folder("tasks")
 # last modified time of file
 def last_change(file_name):
     change_time = os.path.getmtime(file_name)
-    last_change_time = time.strftime('%Y-%m-%d-%H-%m-%s', time.localtime(change_time))
+    last_change_time = time.strftime('%Y-%m-%dT%H:%m:%s', time.localtime(change_time))
     return last_change_time
 
 
@@ -41,15 +41,15 @@ def last_change(file_name):
 def rename_old_txt_file(file_name):
     if os.path.exists(file_name):
         time = last_change(file_name)
-        os.rename(file_name, file_name[:-4] + "_" + time + ".txt")
+        os.rename(file_name, f'{file_name[:-4]}_{time}.txt')
 
 
 # shorten the task name
 def shorten_task_name(task_name):
     if len(task_name) > 50:
-        return task_name[:50] + "...\n"
+        return f"{task_name[:50]}...\n"
     else:
-        return task_name + "\n"
+        return f"{task_name}\n"
 
 
 # receiving data and deserialization
@@ -67,10 +67,10 @@ cr_time = now.strftime("%d.%m.%Y %H:%M")
 for user in users:
     user_info = []
     user_info.append(user['name'])  # user name
-    user_info.append("{0}{1}{2}".format(' <', user['email'], '> '))  # user email
+    user_info.append(f"<{user['email']}>")  # user email
     user_info.append(cr_time + "\n")  # creation time
-    user_info.append(user['company']['name'] + "\n\n")  # company name
-    user_info.append("Completed tasks:\n")
+    user_info.append(f"{user['company']['name']}\n\n")  # company name
+    user_info.append('Completed tasks:\n')
 
 # sorting tasks, formatting and append to user_info
     comp_task = []
@@ -87,12 +87,12 @@ for user in users:
     user_info.append("Outstanding tasks:\n")
     user_info.append("".join(outst_task))
 
-    user_file_name = "{}.txt".format(user['username'])
+    user_file_name = f"{user['username']}.txt"
 
     rename_old_txt_file(user_file_name)  # if file exist, creating a new one
 
     try:  # with out context manager
-        file = open('{}'.format(user_file_name), 'w', encoding='utf-8')
+        file = open(f'{user_file_name}', 'w', encoding='utf-8')
         file.write("".join(user_info))
         file.close()
         print('Report created')
@@ -100,4 +100,3 @@ for user in users:
         print("IOError")
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), user_file_name)
         os.remove(path)
-    
