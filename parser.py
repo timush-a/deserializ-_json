@@ -68,7 +68,7 @@ for user in users:
     user_info = []
     user_info.append(user['name'])  # user name
     user_info.append(f"<{user['email']}>")  # user email
-    user_info.append(cr_time + "\n")  # creation time
+    user_info.append(f"{cr_time}\n")  # creation time
     user_info.append(f"{user['company']['name']}\n\n")  # company name
     user_info.append('Completed tasks:\n')
 
