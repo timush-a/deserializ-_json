@@ -1,33 +1,24 @@
-from datetime import datetime
+from datetime import datetime, time
 import json
 import requests
 import os
 import time
 
 
-# API availability check
-try:
-    requests.get("https://jsonplaceholder.typicode.com/users")
-    requests.get("https://jsonplaceholder.typicode.com/todos")
-except requests.exceptions.ConnectionError:
-    print("Error, the script did not complete the task")
-    print("Check your internet connection")
-    raise SystemExit
+users_url = "https://jsonplaceholder.typicode.com/users"
+todos_url = "https://jsonplaceholder.typicode.com/todos"
+folder_name = "tasks"
 
 
-# creating directory in current directory
-def create_folder(directory_name):
+def create_folder(folder_name: str):
+    # creating directory in current directory
     parent_dir = os.getcwd()
-    path = os.path.join(parent_dir, directory_name)
+    path = os.path.join(parent_dir, folder_name)
     try:
         os.mkdir(path)
     except OSError:
         print("Folder already exists in ", parent_dir)
     os.chdir(path)
-
-
-# reports will be created in this folder
-create_folder("tasks")
 
 
 # last modified time of file
@@ -52,25 +43,68 @@ def shorten_task_name(task_name):
         return f"{task_name}\n"
 
 
+def report_creation(users_url: str, todos_url: str, folder_name: str):
+    """
+    Creating reports for each user in the specified directory(folder_name).
+    Uses 2 API (users_url, todos_url) which return JSON files.
+
+    Example:
+    Leanne Graham <Sincere@april.biz> 04.04.2020 16:55
+    Romaguera-Crona
+
+    Completed tasks:
+    et porro tempora
+    quo adipisci enim quam ut ab
+    illo est ratione doloremque quia maiores aut
+    vero rerum temporibus dolor
+    ipsa repellendus fugit nisi
+    repellendus sunt dolores architecto voluptatum
+    ab voluptatum amet voluptas
+    accusamus eos facilis sint et aut voluptatem
+    quo laboriosam deleniti aut qui
+    molestiae ipsa aut voluptatibus pariatur dolor nih...
+    ullam nobis libero sapiente ad optio sint
+
+    Outstanding tasks:
+    delectus aut autem
+    quis ut nam facilis et officia qui
+    fugiat veniam minus
+    laboriosam mollitia et enim quasi adipisci quia pr...
+    qui ullam ratione quibusdam voluptatem quia omnis
+    illo expedita consequatur quia in
+    molestiae perspiciatis ipsa
+    et doloremque nulla
+    dolorum est consequatur ea mollitia in culpa
+    """
+
+
+# reports will be created in this folder
+    create_folder(str(folder_name))
+
+# API availability check
+    try:
+        requests.get("https://jsonplaceholder.typicode.com/users")
+        requests.get("https://jsonplaceholder.typicode.com/todos")
+    except requests.exceptions.ConnectionError:
+        print("Connection error, the script did not complete the task")
+        print("Check your internet connection")
+    raise SystemExit
+
 # receiving data and deserialization
-users_data_response = requests.get("https://jsonplaceholder.typicode.com/users")
-tasks_data_responce = requests.get("https://jsonplaceholder.typicode.com/todos")
+    users_data_response = requests.get(users_url)
+    tasks_data_responce = requests.get(users_todos)
 
-users = json.loads(users_data_response.text)
-tasks = json.loads(tasks_data_responce.text)
-
-# current time
-now = datetime.now()
-cr_time = now.strftime("%d.%m.%Y %H:%M")
+    users = json.loads(users_data_response.text)
+    tasks = json.loads(tasks_data_responce.text)
 
 # collecting user information, and users tasks
-for user in users:
-    user_info = []
-    user_info.append(user['name'])  # user name
-    user_info.append(f"<{user['email']}>")  # user email
-    user_info.append(f"{cr_time}\n")  # creation time
-    user_info.append(f"{user['company']['name']}\n\n")  # company name
-    user_info.append('Completed tasks:\n')
+    for user in users:
+        user_info = []
+        user_info.append(user['name'])  # user name
+        user_info.append(f" <{user['email']}> ")  # user email
+        user_info.append(f"{cr_time}\n")  # creation time
+        user_info.append(f"{user['company']['name']}\n\n")  # company name
+        user_info.append('Completed tasks:\n')
 
 # sorting tasks, formatting and append to user_info
     comp_task = []
@@ -100,3 +134,7 @@ for user in users:
         print("IOError")
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), user_file_name)
         os.remove(path)
+
+
+if __name__ == "__main__":
+    report_creation(users_url, todos_url, folder_name)
