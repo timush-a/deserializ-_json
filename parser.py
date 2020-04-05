@@ -57,18 +57,18 @@ def reports_creation(users_url: str, todos_url: str, folder_name: str):
 
     api_availability(users_url, todos_url)
 
-# reports will be created in this folder
+    # reports will be created in this folder
     create_folder(str(folder_name))
 
 
-# receiving data and deserialization
+    # receiving data and deserialization
     users_data_response = requests.get(users_url)
     tasks_data_responce = requests.get(todos_url)
 
     users = json.loads(users_data_response.text)
     tasks = json.loads(tasks_data_responce.text)
 
-# collecting user information, and users tasks
+    # collecting user information, and users tasks
     for user in users:
         user_info = []
         user_info.append(user['name'])  # user name
@@ -77,7 +77,7 @@ def reports_creation(users_url: str, todos_url: str, folder_name: str):
         user_info.append(f"{user['company']['name']}\n\n")  # company name
         user_info.append('Completed tasks:\n')
 
-# sorting tasks, formatting and append to user_info
+    # sorting tasks, formatting and append to user_info
         comp_task = []
         outst_task = []
 
