@@ -77,13 +77,15 @@ class User():
             last_change = time.strftime('%Y-%m-%dT%H-%m-%S', time.localtime(change_time))
             os.rename(self.report, f'{self.report[:-4]}_{last_change}.txt')
 
-        self.user_info = f"""{self.name} <{self.email}>
-Time of creation: {time.strftime('%Y-%m-%d %H:%m', time.localtime())}
-{self.company_name}\n
-Completed tasks:\n
-{"".join(self.completed_tasks)}
-Unfinished tasks:\n
-{"".join(self.unfinished_tasks)} """
+    self.user_info = (
+        f"{self.name} <{self.email}>" \
+        f"Time of creation: {time.strftime('%Y-%m-%d %H:%m', time.localtime())}"
+        f"{self.company_name}"
+        f"Completed tasks:"
+        f"{''.join(self.completed_tasks)}"
+        f"Unfinished tasks:\n"
+        f"{''.join(self.unfinished_tasks)}"
+)
         try:  # with out context manager
             file = open(self.report_name, "w", encoding="utf-8")
             file.write(self.user_info)
