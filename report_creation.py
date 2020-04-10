@@ -1,8 +1,8 @@
 from datetime import datetime
-import json
-import requests
 import os
 import time
+import json
+import requests
 
 
 users_url = "https://json.medrating.org/users"
