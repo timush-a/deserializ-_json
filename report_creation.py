@@ -33,7 +33,7 @@ class ReportFunctions():
             return f"{task_name}\n"
 
     def create_folder(folder_name: str):
-        # creating directory in current directory
+        # creates directory in current directory
         parent_dir = os.getcwd()
         path = os.path.join(parent_dir, folder_name)
         try:
