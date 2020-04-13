@@ -82,11 +82,11 @@ class ReportStructure(ReportFunctions):
 
         self.user_info = (
             f"{self.name} <{self.email}> "
-            f"{time.strftime('%Y-%m-%d %H:%m', time.localtime())}"
-            f"\n{self.company_name}\n"
-            f"\nCompleted tasks:\n"
-            f"{''.join(self.completed_tasks)}"
-            f"\nUnfinished tasks:\n"
+            f"{time.strftime('%Y-%m-%d %H:%m', time.localtime())}\n"
+            f"{self.company_name}\n\n"
+            f"Completed tasks:\n"
+            f"{''.join(self.completed_tasks)}\n"
+            f"Unfinished tasks:\n"
             f"{''.join(self.unfinished_tasks)}"
         )
 
